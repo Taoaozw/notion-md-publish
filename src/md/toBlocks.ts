@@ -14,6 +14,57 @@ type RichTextItemRequest = {
   };
 };
 
+const NOTION_LANGUAGES = new Set([
+  'abap', 'abc', 'agda', 'arduino', 'ascii art', 'assembly', 'bash', 'basic', 'bnf', 'c', 'c#', 'c++',
+  'clojure', 'coffeescript', 'coq', 'css', 'dart', 'dhall', 'diff', 'docker', 'ebnf', 'elixir', 'elm',
+  'erlang', 'f#', 'flow', 'fortran', 'gherkin', 'glsl', 'go', 'graphql', 'groovy', 'haskell', 'hcl',
+  'html', 'idris', 'java', 'javascript', 'json', 'julia', 'kotlin', 'latex', 'less', 'lisp', 'livescript',
+  'llvm ir', 'lua', 'makefile', 'markdown', 'markup', 'matlab', 'mathematica', 'mermaid', 'nix',
+  'notion formula', 'objective-c', 'ocaml', 'pascal', 'perl', 'php', 'plain text', 'powershell', 'prolog',
+  'protobuf', 'purescript', 'python', 'r', 'racket', 'reason', 'ruby', 'rust', 'sass', 'scala', 'scheme',
+  'scss', 'shell', 'smalltalk', 'solidity', 'sql', 'swift', 'toml', 'typescript', 'vb.net', 'verilog',
+  'vhdl', 'visual basic', 'webassembly', 'xml', 'yaml', 'java/c/c++/c#'
+]);
+
+const LANGUAGE_ALIASES: Record<string, string> = {
+  'tsx': 'typescript',
+  'jsx': 'javascript',
+  'sh': 'shell',
+  'zsh': 'shell',
+  'yml': 'yaml',
+  'dockerfile': 'docker',
+  'kt': 'kotlin',
+  'py': 'python',
+  'rb': 'ruby',
+  'rs': 'rust',
+  'ts': 'typescript',
+  'js': 'javascript',
+  'md': 'markdown',
+  'objc': 'objective-c',
+  'cs': 'c#',
+  'cpp': 'c++',
+  'fs': 'f#',
+  'vb': 'visual basic',
+  'hs': 'haskell',
+  'pl': 'perl',
+  'ex': 'elixir',
+  'exs': 'elixir',
+  'erl': 'erlang',
+  'clj': 'clojure',
+  'ml': 'ocaml',
+  'ps1': 'powershell',
+  'proto': 'protobuf',
+  'sol': 'solidity',
+  'wasm': 'webassembly',
+};
+
+function normalizeCodeLanguage(lang: string): string {
+  const normalized = lang.toLowerCase().trim();
+  if (NOTION_LANGUAGES.has(normalized)) return normalized;
+  if (LANGUAGE_ALIASES[normalized]) return LANGUAGE_ALIASES[normalized];
+  return 'plain text';
+}
+
 function createRichText(text: string): RichTextItemRequest[] {
   if (!text) return [];
   const chunks: RichTextItemRequest[] = [];
@@ -74,11 +125,12 @@ function parseInlineText(text: string): RichTextItemRequest[] {
         result.push(...createRichText(remaining.slice(0, earliestMatch.index)));
       }
       
+      const isValidUrl = earliestMatch.url && /^https?:\/\//.test(earliestMatch.url);
       const item: RichTextItemRequest = {
         type: 'text',
         text: { 
           content: earliestMatch.content.slice(0, 2000),
-          link: earliestMatch.url ? { url: earliestMatch.url } : null
+          link: isValidUrl ? { url: earliestMatch.url! } : null
         }
       };
       
@@ -163,7 +215,7 @@ function tokenToBlocks(token: ParsedToken): BlockObjectRequest[] {
     
     case 'code': {
       const text = token.text || '';
-      const lang = (token.lang || 'plain text').toLowerCase();
+      const lang = normalizeCodeLanguage(token.lang || 'plain text');
       blocks.push({
         object: 'block',
         type: 'code',

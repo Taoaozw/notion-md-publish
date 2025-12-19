@@ -1,6 +1,6 @@
 {
   "name": "notion-md-publish",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Markdown → Notion 发布工具 | Publish Markdown docs to Notion",
   "type": "module",
   "main": "dist/cli.js",
