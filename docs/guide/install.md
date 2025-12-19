@@ -17,3 +17,13 @@ npm run build
 ```bash
 md-publish --help
 ```
+
+
+
+## Milestones
+
+| Phase | 内容 | 
+|-------|------|
+| P1 | 价格导入 + 比价查询 |
+| P2 | 邮编区域规则 + 偏远价格 |
+| P3 | 历史价格查询 + 价格趋势 |
