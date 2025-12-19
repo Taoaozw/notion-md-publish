@@ -27,16 +27,16 @@
     "documentation",
     "cli"
   ],
-  "author": "clive",
+  "author": "Taoaozw",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/clive/notion-md-publish.git"
+    "url": "git+https://github.com/Taoaozw/notion-md-publish.git"
   },
   "bugs": {
-    "url": "https://github.com/clive/notion-md-publish/issues"
+    "url": "https://github.com/Taoaozw/notion-md-publish/issues"
   },
-  "homepage": "https://github.com/clive/notion-md-publish#readme",
+  "homepage": "https://github.com/Taoaozw/notion-md-publish#readme",
   "dependencies": {
     "@notionhq/client": "^2.2.14",
     "commander": "^12.1.0",
