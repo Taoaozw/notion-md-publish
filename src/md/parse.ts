@@ -1,5 +1,9 @@
 import { marked } from 'marked';
 
+export interface TableCell {
+  text: string;
+}
+
 export interface ParsedToken {
   type: string;
   raw: string;
@@ -8,6 +12,8 @@ export interface ParsedToken {
   lang?: string;
   items?: ParsedToken[];
   ordered?: boolean;
+  header?: TableCell[];
+  rows?: TableCell[][];
 }
 
 export function parseMarkdown(content: string): ParsedToken[] {

@@ -1,5 +1,5 @@
 import type { BlockObjectRequest } from '@notionhq/client/build/src/api-endpoints.js';
-import { parseMarkdown, type ParsedToken } from './parse.js';
+import { parseMarkdown, type ParsedToken, type TableCell } from './parse.js';
 
 type RichTextItemRequest = {
   type: 'text';
@@ -247,11 +247,47 @@ function tokenToBlocks(token: ParsedToken): BlockObjectRequest[] {
     }
     
     case 'table': {
-      const text = token.raw || '';
+      const header = token.header || [];
+      const rows = token.rows || [];
+      const tableWidth = header.length || (rows[0]?.length || 0);
+      
+      if (tableWidth === 0) {
+        break;
+      }
+      
+      const tableRows: BlockObjectRequest[] = [];
+      
+      // Header row
+      if (header.length > 0) {
+        tableRows.push({
+          object: 'block',
+          type: 'table_row',
+          table_row: {
+            cells: header.map((cell: TableCell) => parseInlineText(cell.text || ''))
+          }
+        } as BlockObjectRequest);
+      }
+      
+      // Data rows
+      for (const row of rows) {
+        tableRows.push({
+          object: 'block',
+          type: 'table_row',
+          table_row: {
+            cells: row.map((cell: TableCell) => parseInlineText(cell.text || ''))
+          }
+        } as BlockObjectRequest);
+      }
+      
       blocks.push({
         object: 'block',
-        type: 'paragraph',
-        paragraph: { rich_text: createRichText(text) }
+        type: 'table',
+        table: {
+          table_width: tableWidth,
+          has_column_header: header.length > 0,
+          has_row_header: false,
+          children: tableRows
+        }
       } as BlockObjectRequest);
       break;
     }
