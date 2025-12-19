@@ -1,0 +1,9 @@
+version: 1
+
+notion:
+  token_env: NOTION_TOKEN
+
+targets:
+  - name: docs
+    src: ./docs
+    parent_page_id: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

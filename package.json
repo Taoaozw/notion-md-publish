@@ -1,0 +1,56 @@
+{
+  "name": "notion-md-publish",
+  "version": "1.0.0",
+  "description": "Markdown → Notion 发布工具 | Publish Markdown docs to Notion",
+  "type": "module",
+  "main": "dist/cli.js",
+  "bin": {
+    "notion-md-publish": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "start": "node dist/cli.js",
+    "dev": "tsx src/cli.ts"
+  },
+  "keywords": [
+    "markdown",
+    "notion",
+    "publish",
+    "sync",
+    "docs",
+    "documentation",
+    "cli"
+  ],
+  "author": "clive",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clive/notion-md-publish.git"
+  },
+  "bugs": {
+    "url": "https://github.com/clive/notion-md-publish/issues"
+  },
+  "homepage": "https://github.com/clive/notion-md-publish#readme",
+  "dependencies": {
+    "@notionhq/client": "^2.2.14",
+    "commander": "^12.1.0",
+    "js-yaml": "^4.1.0",
+    "marked": "^12.0.0",
+    "p-limit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

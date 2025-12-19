@@ -1,0 +1,20 @@
+# Source files
+src/
+tsconfig.json
+
+# Development
+.idea/
+.vscode/
+*.log
+
+# Test files
+docs/
+md-publish.yml
+
+# Git
+.git/
+.gitignore
+
+# Documentation (keep README)
+prd.md
+CHANGELOG.md
