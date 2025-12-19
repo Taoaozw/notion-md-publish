@@ -151,7 +151,7 @@ Make sure the relevant pages and databases are shared with your integration.
 ### Environment variable not set
 
 ```
-Error: 环境变量 NOTION_TOKEN 未设置
+Error: NOTION_TOKEN environment variable is not set
 ```
 
 **Solution**:
